@@ -33,7 +33,7 @@ bool is_unwinding = false;
 
 bool is_rotating_roller = false;
 
-int flywheel_motor_speed = 110; // volt
+int flywheel_motor_speed = 127; // volt
 
 bool is_auto = false;
 
@@ -121,11 +121,76 @@ void tick() {
 	pros::delay(20);
 }
 
+void move(int amount) {
+    front_left_motor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
+    back_left_motor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
+    front_right_motor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
+    back_right_motor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
+
+    front_left_motor.move_velocity(300);
+    back_left_motor.move_velocity(300);
+    front_right_motor.move_velocity(300);
+    back_right_motor.move_velocity(300);
+
+    pros::delay(amount * 500); // shitty ass code ik ik
+
+    front_left_motor.brake();
+    back_left_motor.brake();
+    front_right_motor.brake();
+    back_right_motor.brake();
+
+}
+
+void turn_deg(double deg) {
+    
+
+    // for (int i = 0; i < 100; i++) {
+    //     front_left_motor.move(100);
+    //     back_left_motor.move(100);
+    //     front_right_motor.move(-100);
+    //     back_right_motor.move(-100);
+
+    //     pros::delay(20);
+    // }
+
+    front_left_motor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
+    back_left_motor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
+    front_right_motor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
+    back_right_motor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
+
+    front_left_motor.move_velocity(300);
+    back_left_motor.move_velocity(300);
+    front_right_motor.move_velocity(-300);
+    back_right_motor.move_velocity(-300);
+
+    pros::delay( (6.3)*deg );
+
+    front_left_motor.brake();
+    back_left_motor.brake();
+    front_right_motor.brake();
+    back_right_motor.brake();
+
+    // Wait until both motors reach their target position
+}
+
+void auton() {
+    pros::delay(1000);
+    move(1);
+    conveyer_motor.move(200);
+    pros::delay(280);
+    conveyer_motor.brake();
+    // turn_deg(90);
+}
+
 int main() {
 
-    while(true) {
-        tick();
-    }
+    // while(true) {
+    //     tick();
+    // }
+    // return 0;
+
+    auton();
+    
     return 0;
 }
 
